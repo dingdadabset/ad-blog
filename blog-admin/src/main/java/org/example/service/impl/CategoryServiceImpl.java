@@ -51,9 +51,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         objectPage.setCurrent(pageNum);
         objectPage.setSize(pageSize);
         page(objectPage,eq);
-        List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(objectPage.getRecords(), CategoryVo.class);
-        log.info("==========={}",categoryVos);
-        return ResponseResult.okResult(categoryVos);
+        return ResponseResult.okResult(new CategoryVo(objectPage.getRecords(),objectPage.getTotal()));
     }
 }
 

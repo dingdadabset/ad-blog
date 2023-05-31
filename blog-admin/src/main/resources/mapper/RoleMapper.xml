@@ -12,4 +12,19 @@
             r.`status` = 0 AND
             r.`del_flag` = 0
     </select>
+    <select id="selectMensByRoleId" resultType="org.example.entity.Menu">
+        select c.*
+        from sys_role a join sys_role_menu sur on a.id = sur.role_id join sys_menu c on sur.menu_id =c.id
+        where a.id=#{id} and a.status=0 and a.del_flag=0
+        ;
+    </select>
+    <select id="selectUserIdFindRoleId" resultType="java.lang.Long" parameterType="java.lang.Long">
+
+    </select>
+    <select id="selectUserIdFindRoles" resultType="org.example.entity.Role" parameterType="java.lang.Long">
+        select c.*
+        from sys_user a join sys_user_role sur on a.id = sur.user_id join sys_role c
+                                                                          on sur.role_id=c.id
+        where a.id=#{id}
+    </select>
 </mapper>

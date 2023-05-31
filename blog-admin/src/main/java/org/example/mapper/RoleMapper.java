@@ -1,6 +1,7 @@
 package org.example.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.entity.Menu;
 import org.example.entity.Role;
 
 import java.util.List;
@@ -14,5 +15,8 @@ import java.util.List;
 public interface RoleMapper extends BaseMapper<Role> {
 
     List<String> selectRoleKeyByUserId(Long id);
+    List<Menu>  selectMensByRoleId(Long id);
+    Long selectUserIdFindRoleId(Long id);
+    List<Role> selectUserIdFindRoles(Long id);
 }
 

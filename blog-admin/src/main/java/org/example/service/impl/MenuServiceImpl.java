@@ -10,7 +10,9 @@ import org.example.entity.Menus;
 import org.example.entity.MenusPro;
 import org.example.mapper.MenuMapper;
 import org.example.entity.Menu;
+import org.example.mapper.RoleMapper;
 import org.example.service.MenuService;
+import org.example.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,18 +79,42 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         //使用mapper中的模糊查询
         return ResponseResult.okResult(list);
     }
-@Autowired
-private MenuServiceImpl menuService;
+    @Autowired
+    private RoleMapper menuService;
     @Override
     public ResponseResult getTreeById(String id) {
-        Menu byId = getById(id);
-        List<Menus> tree = menuService.getTree(id);
-        Menus build = Menus.builder().label(byId.getMenuName())
-                .parentId(byId.getParentId().toString())
-                .children(tree).build();
-        MenusPro menusPro = new MenusPro();
-        return ResponseResult.okResult(menusPro.setMenus(build););
+        ArrayList<String> strings = new ArrayList<>();
+
+        List<Menus> collect = menuService.selectMensByRoleId(Long.parseLong(id)).stream().map(x -> {
+           strings.add(x.getId().toString());
+            return Menus.builder().label(x.getMenuName())
+                    .parentId(x.getParentId().toString())
+                    .children(getTree(x.getId().toString())).build();
+        }).collect(Collectors.toList());
+
+
+        return ResponseResult.okResult(new MenusPro(collect,strings));
     }
+
+    @Override
+    public ResponseResult treeSelect() {
+
+        LambdaQueryWrapper<Menu> eq = new LambdaQueryWrapper<Menu>().eq(Menu::getParentId, 1);
+        List<Menu> list = list(eq);
+        List<Menus> collect = list.stream().map(x -> {
+            return Menus.builder().id(x.getId().toString())
+                    .label(x.getMenuName())
+                    .parentId(x.getParentId().toString())
+                    .children(getTree(x.getId().toString()))
+                    .build();
+
+        }).collect(Collectors.toList());
+
+
+
+        return ResponseResult.okResult(collect);
+    }
+
     public  List<Menus> getTree(String id){
         LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Menu::getParentId,id);

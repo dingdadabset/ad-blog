@@ -63,6 +63,11 @@ public class CategoryController {
 
         return ResponseResult.okResult(categoryService.removeById(category.getId()));
     }
+    @PutMapping
+    public ResponseResult updateCategory(Category category){
+
+        return ResponseResult.okResult(categoryService.updateById(category));
+    }
 
     
 }

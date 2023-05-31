@@ -1,7 +1,9 @@
 package org.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.jsonwebtoken.lang.Strings;
 import org.example.conf.AppHttpCodeEnum;
 import org.example.conf.RedisCache;
 import org.example.conf.ResponseResult;
@@ -125,6 +127,17 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         redisCache.incrementCacheMapValue("article:viewCount",id.toString(),1);
         return ResponseResult.okResult();
 
+    }
+
+    @Override
+    public ResponseResult getList(Integer pageNum, Integer pageSize, String userName, String phonenumber, String status) {
+        LambdaQueryWrapper<User> eq = new LambdaQueryWrapper<User>().eq(Strings.hasText(userName), User::getUserName, userName)
+                .eq(Strings.hasText(phonenumber), User::getPhonenumber, pageNum)
+                .eq(Strings.hasText(status), User::getStatus, status);
+        Page<User> userPage = new Page<User>().setCurrent(pageNum).setSize(pageSize);
+        Page<User> page = page(userPage, eq);
+
+    return  ResponseResult.okResult(new UserVo(page.getRecords(),page.getTotal()));
     }
 
     private boolean nickNameExist(String nickName) {

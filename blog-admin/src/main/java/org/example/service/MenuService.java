@@ -22,5 +22,7 @@ public interface MenuService extends IService<Menu> {
     ResponseResult<List<Menu>> selectList(String status, String menuName);
 
     ResponseResult getTreeById(String id);
+
+    ResponseResult treeSelect();
 }
 

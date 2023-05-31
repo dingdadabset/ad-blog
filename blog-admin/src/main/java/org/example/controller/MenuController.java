@@ -47,7 +47,7 @@ public class MenuController {
     @GetMapping("treeselect")
     public ResponseResult treeSelect(){
        //TODO 这里还没写
-        return  null;
+        return  menuService.treeSelect();
     }
     @GetMapping("roleMenuTreeselect/{id}")
     public ResponseResult getTreeById(@PathVariable String id){

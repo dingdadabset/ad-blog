@@ -14,6 +14,12 @@ public class MenusPro {
 
     private List<Menus> menus;
     private List<String> checkedKeys;
+
+    public MenusPro(List<Menus> collect,List<String> list) {
+        this.menus=collect;
+        this.checkedKeys=list;
+    }
+
     public void setMenus(List<Menus> menus) {
          this.menus = menus;
      }
