@@ -23,8 +23,8 @@ public class ArticleController {
         return articleService.add(article);
     }
     @GetMapping("list")
-    public ResponseResult<List<ArticleListVo>> getList(Integer pageNum,Integer pageSize){
-        return articleService.articleList(pageNum,pageSize,null);
+    public ResponseResult<List<ArticleListVo>> getList(Integer pageNum,Integer pageSize,String title,String summary){
+        return articleService.articleList(pageNum,pageSize,null,title,summary);
     }
     @DeleteMapping("{id}")
     public ResponseResult del(@PathVariable Long id){

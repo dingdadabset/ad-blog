@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,9 +59,11 @@ public class SgArticleServiceImpl extends ServiceImpl<SgArticleDao, SgArticle> i
     @Autowired
     private SgCategoryService categoryService;
     @Override
-    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId, String title, String summary) {
         LambdaQueryWrapper<SgArticle> qu = new LambdaQueryWrapper<SgArticle>()
-                .eq(Objects.nonNull(categoryId)&&categoryId>=0, SgArticle::getCategoryId, categoryId)
+                .eq(Objects.nonNull(categoryId), SgArticle::getCategoryId, categoryId)
+                .eq(Objects.nonNull(title),SgArticle::getTitle,title)
+                .eq(Objects.nonNull(summary),SgArticle::getSummary,summary)
                 .eq(SgArticle::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL)
                 .orderByDesc(SgArticle::getIsTop);
         Page<SgArticle> sgArticlePage = new Page<>(pageNum, pageSize);
@@ -68,6 +71,7 @@ public class SgArticleServiceImpl extends ServiceImpl<SgArticleDao, SgArticle> i
         List<SgArticle> articles = page.getRecords();
         //查询categoryName
         articles.stream()
+                .filter((x)->Objects.nonNull(x.getCategoryId()))
                 .map(article ->{
                     article.setCategoryName(categoryService.
                             getById(article.getCategoryId()).getName());
@@ -98,8 +102,7 @@ public class SgArticleServiceImpl extends ServiceImpl<SgArticleDao, SgArticle> i
 
         return ResponseResult.okResult(sgArticleVO);
     }
-    @Autowired
-    private ArticleTagService articleTagService;
+
     @Override
     public ResponseResult add(AddArticleDto article) {
         SgArticle article2 = BeanCopyUtils.copyBean(article, SgArticle.class);
@@ -111,8 +114,8 @@ public class SgArticleServiceImpl extends ServiceImpl<SgArticleDao, SgArticle> i
                 .collect(Collectors.toList());
 
         //添加 博客和标签的关联
-        articleTagService.saveBatch(articleTags);
-        return ResponseResult.okResult();
+        //articleTagService.saveBatch();
+        return ResponseResult.okResult(articleTags);
     }
 }
 

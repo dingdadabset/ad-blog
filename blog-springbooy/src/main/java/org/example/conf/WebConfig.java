@@ -49,6 +49,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(fastJsonHttpMessageConverters());
+        converters.add(fastJsonHttpMessageConverters());//使得Spring MVC能够正确地将Java对象转换成JSON格式的数据并返回给前端。
     }
 }

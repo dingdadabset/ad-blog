@@ -7,10 +7,7 @@ import org.example.conf.AppHttpCodeEnum;
 import org.example.conf.ResponseResult;
 import org.example.conf.SystemConstants;
 import org.example.dao.SgCommentDao;
-import org.example.entity.Comment;
-import org.example.entity.CommentVo;
-import org.example.entity.PageVo;
-import org.example.entity.SystemException;
+import org.example.entity.*;
 import org.example.service.SgCommentService;
 import org.example.service.UserService;
 import org.example.utils.BeanCopyUtils;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 评论表(SgComment)表服务实现类
@@ -31,15 +29,15 @@ public class SgCommentServiceImpl extends ServiceImpl<SgCommentDao, Comment> imp
     @Autowired
     private UserService userService;
     @Override
-    public ResponseResult commentList(String commentType,Long articleId, Integer pageNum, Integer pageSize) {
+    public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
         //对articleId进行判断
-        queryWrapper.eq(SystemConstants.ARTICLE_COMMENT.equals(commentType),Comment::getArticleId,articleId);
+        queryWrapper.eq(Objects.nonNull(articleId),Comment::getArticleId,articleId);
         //根评论 rootId为-1
         queryWrapper.eq(Comment::getRootId,-1);
 
         //评论类型
-        queryWrapper.eq(Comment::getType,commentType);
+        //queryWrapper.eq(Comment::getType,commentType);
 
         //分页查询
         Page<Comment> page = new Page(pageNum,pageSize);
@@ -83,9 +81,13 @@ public class SgCommentServiceImpl extends ServiceImpl<SgCommentDao, Comment> imp
         List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(list, CommentVo.class);
         //遍历vo集合
         for (CommentVo commentVo : commentVos) {
+            User byId = userService.getById(commentVo.getCreateBy());
+            if (Objects.nonNull(byId)){
+                //String nickName = ;
+                commentVo.setUsername(byId.getNickName());
+            }
             //通过creatyBy查询用户的昵称并赋值
-            String nickName = userService.getById(commentVo.getCreateBy()).getNickName();
-            commentVo.setUsername(nickName);
+
             //通过toCommentUserId查询用户的昵称并赋值
             //如果toCommentUserId不为-1才进行查询
             if(commentVo.getToCommentUserId()!=-1){

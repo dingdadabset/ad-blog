@@ -15,6 +15,7 @@ public class ViewCountRunner implements CommandLineRunner {
 
     @Autowired
     private SgArticleDao articleMapper;
+    //todo 不知道这个是做什么的
 
     @Autowired
     private RedisCache redisCache;

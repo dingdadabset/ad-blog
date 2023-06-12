@@ -14,10 +14,12 @@ import org.example.entity.SgArticle;
 public interface SgArticleService extends IService<SgArticle> {
     ResponseResult hotArticleList();
 
-    ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId);
+    ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId, String title, String summary);
 
     ResponseResult getArticleDetail(Long id);
 
     ResponseResult add(AddArticleDto article);
+
+    //ResponseResult articleList2(Integer pageNum, Integer pageSize, Long categoryId, Object o, Object o1);
 }
 

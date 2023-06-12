@@ -42,4 +42,10 @@ public class UserManagerController {
     public ResponseResult updateUser(@RequestBody User user){
         return ResponseResult.okResult(userService.save(user));
     }
+    @PostMapping ()
+    public ResponseResult add(@RequestBody User user){
+        return ResponseResult.okResult(userService.save(user));
+    }
+
+
 }

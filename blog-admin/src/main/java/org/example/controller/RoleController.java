@@ -55,10 +55,10 @@ public class RoleController {
         return ResponseResult.okResult(roleService.save(menu));
     }
 
-    @DeleteMapping()
-    public ResponseResult delOneRole(@PathVariable String role) {
+    @DeleteMapping("{id}")
+    public ResponseResult delOneRole(@PathVariable String id) {
 
-        return ResponseResult.okResult(roleService.removeById(role));
+        return ResponseResult.okResult(roleService.removeById(id));
     }
 
     @GetMapping("listAllRole")

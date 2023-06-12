@@ -31,13 +31,14 @@ public class SgCategoryServiceImpl extends ServiceImpl<SgCategoryDao, SgCategory
         private SgArticleService sgArticleService;
     @Override
     public ResponseResult getCategoryList() {
-        LambdaQueryWrapper<SgArticle> eq = new LambdaQueryWrapper<SgArticle>().eq(SgArticle::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
+        LambdaQueryWrapper<SgArticle> eq = new LambdaQueryWrapper<SgArticle>()
+                .eq(SgArticle::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
 
         List<SgArticle> list = sgArticleService.list(eq);
         Set<Long> categouryId = list.stream().map(x -> x.getCategoryId()).collect(Collectors.toSet());
 
         List<SgCategory> sgCategories = listByIds(categouryId);
-        List<SgCategory> collect = sgCategories.stream().filter(x -> x.getStatus().equals(SystemConstants.ARTICLE_STATUS_NORMAL)).collect(Collectors.toList());
+        List<SgCategory> collect = sgCategories.stream().filter(x -> !x.getStatus().equals(SystemConstants.ARTICLE_STATUS_NORMAL)).collect(Collectors.toList());
         List<SgCategoryVO> categoryVos = BeanCopyUtils.copyBeanList(collect, SgCategoryVO.class);
 
         return ResponseResult.okResult(categoryVos);

@@ -19,15 +19,16 @@ public class CommentController {
 
     @GetMapping("/commentList")
     public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize){
-        return commentService.commentList(SystemConstants.ARTICLE_COMMENT,articleId,pageNum,pageSize);
+        return commentService.commentList(articleId,pageNum,pageSize);
     }
     @PostMapping
     public ResponseResult addComment(@RequestBody Comment comment){
+
         return commentService.addComment(comment);
     }
     @GetMapping("/linkCommentList")
     @ApiOperation(value = "友链评论列表",notes = "获取一页友链评论")
-    public ResponseResult linkCommentList(Integer pageNum,Integer pageSize){
-        return commentService.commentList(SystemConstants.LINK_COMMENT,null,pageNum,pageSize);
+    public ResponseResult linkCommentList(Integer pageNum,Integer pageSize,Long articleId){
+        return commentService.commentList(articleId,pageNum,pageSize);
     }
 }

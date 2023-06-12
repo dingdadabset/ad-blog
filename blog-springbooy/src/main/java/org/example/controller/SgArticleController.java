@@ -4,14 +4,11 @@ package org.example.controller;
 
 
 import org.example.conf.ResponseResult;
-import org.example.entity.SgArticle;
 import org.example.service.SgArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * 文章表(SgArticle)表控制层
@@ -22,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("article")
 public class SgArticleController<R>  {
-    @Autowired
+    @Resource
     private SgArticleService sgArticleService;
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(Long id){
@@ -30,7 +27,7 @@ public class SgArticleController<R>  {
     }
     @GetMapping("/articleList")
     public ResponseResult articleList( Integer pageNum, Integer pageSize, Long categoryId){
-        return sgArticleService.articleList(pageNum,pageSize,categoryId);
+        return sgArticleService.articleList(pageNum,pageSize,categoryId,null,null);
     }
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList(){

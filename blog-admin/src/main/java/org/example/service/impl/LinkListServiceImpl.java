@@ -23,7 +23,7 @@ public class LinkListServiceImpl extends SgLinkServiceImpl{
     public ResponseResult getList(Integer pageNum, Integer pageSize, String name, String status) {
         LambdaQueryWrapper<SgLink> eq = new LambdaQueryWrapper<SgLink>()
                 .eq(Strings.hasText(name), SgLink::getName, name)
-                .eq(SgLink::getStatus, status);
+                .eq(Strings.hasText(status),SgLink::getStatus, status);
 
         Page<SgLink> objectPage = new Page<>();
         objectPage.setCurrent(pageNum);

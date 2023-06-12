@@ -9,6 +9,7 @@ import org.example.entity.LinkVo;
 import org.example.entity.SgLink;
 import org.example.service.SgLinkService;
 import org.example.utils.BeanCopyUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  * @since 2023-05-23 15:26:55
  */
 @Service("sgLinkService")
+@Component("sgLinkService")
 public class SgLinkServiceImpl extends ServiceImpl<SgLinkDao, SgLink> implements SgLinkService {
 
     @Override

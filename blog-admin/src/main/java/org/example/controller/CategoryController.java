@@ -7,6 +7,7 @@ import org.example.conf.ResponseResult;
 import org.example.conf.WebUtils;
 import org.example.entity.Category;
 import org.example.entity.CategoryVo;
+import org.example.entity.CategoryVo2;
 import org.example.entity.ExcelCategoryVo;
 import org.example.service.CategoryService;
 import org.example.utils.BeanCopyUtils;
@@ -25,7 +26,7 @@ public class CategoryController {
     
     @GetMapping("/listAllCategory")
     public ResponseResult listAllCategory(){
-        List<CategoryVo> list = categoryService.listAllCategory();
+        List<CategoryVo2> list = categoryService.listAllCategory();
         return ResponseResult.okResult(list);
     }
     @PreAuthorize("@ps.hasPermission('content:category:export')")
@@ -49,25 +50,31 @@ public class CategoryController {
         }
     }
     @GetMapping("list")
-    public ResponseResult getList(Integer pageNum,Integer pageSize,Category category){
+    public ResponseResult getList(Integer pageNum,Integer pageSize,String name, String status){
 
-        return categoryService.getCategoryPageList(pageNum,pageSize,category);
+        return categoryService.getCategoryPageList(pageNum,pageSize,name,status);
     }
     @PostMapping
     public ResponseResult addCategory(@RequestBody Category category){
 
         return ResponseResult.okResult(categoryService.save(category));
     }
-    @DeleteMapping
-    public ResponseResult delCategory(Category category){
+    @DeleteMapping("{id}")
+    public ResponseResult delCategory(@PathVariable String id){
 
-        return ResponseResult.okResult(categoryService.removeById(category.getId()));
+        return ResponseResult.okResult(categoryService.removeById(id));
     }
     @PutMapping
-    public ResponseResult updateCategory(Category category){
+    public ResponseResult updateCategory(@RequestBody Category category){
 
-        return ResponseResult.okResult(categoryService.updateById(category));
+        return ResponseResult.okResult(categoryService.saveOrUpdate(category));
+    }
+    @GetMapping ("{id}")
+    public ResponseResult selCategory(@PathVariable String id){
+
+        return ResponseResult.okResult(categoryService.getById(id));
     }
 
-    
+
+
 }

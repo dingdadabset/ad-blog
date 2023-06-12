@@ -3,7 +3,7 @@ package org.example.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.conf.ResponseResult;
 import org.example.entity.Category;
-import org.example.entity.CategoryVo;
+import org.example.entity.CategoryVo2;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import java.util.List;
 public interface CategoryService extends IService<Category> {
     ResponseResult getCategoryList();
 
-    List<CategoryVo> listAllCategory();
+    List<CategoryVo2> listAllCategory();
 
-    ResponseResult getCategoryPageList(Integer pageNum, Integer pageSize,Category category);
+    ResponseResult getCategoryPageList(Integer pageNum,Integer pageSize,String name, String status);
 }
 
