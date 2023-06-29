@@ -8,6 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @MapperScan("org.example.mapper")
 @EnableSwagger2
+
 public class BlogAdminApplication {
     public static void main(String[] args) {
         SpringApplication.run(BlogAdminApplication.class, args);

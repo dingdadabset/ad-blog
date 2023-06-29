@@ -30,9 +30,9 @@ public class RoleController {
     }
 
     @PutMapping("changeStatus")
-    public ResponseResult changeStatus(String roleId, String status) {
-        Role byId = roleService.getById(roleId);
-        byId.setStatus(status);
+    public ResponseResult changeStatus(@RequestBody Role role) {
+        Role byId = roleService.getById(role.getId());
+        byId.setStatus(role.getStatus());
 
         return ResponseResult.okResult(roleService.save(byId));
     }

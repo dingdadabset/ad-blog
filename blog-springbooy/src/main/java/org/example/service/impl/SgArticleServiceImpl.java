@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.conf.RedisCache;
@@ -117,5 +118,15 @@ public class SgArticleServiceImpl extends ServiceImpl<SgArticleDao, SgArticle> i
         //articleTagService.saveBatch();
         return ResponseResult.okResult(articleTags);
     }
+
+    @Override
+    public ResponseResult updateViewCount(String id) {
+        SgArticle byId = getById(id);
+        byId.setViewCount(byId.getViewCount()+1);
+        saveOrUpdate(byId);
+        return ResponseResult.okResult();
+    }
+
+
 }
 

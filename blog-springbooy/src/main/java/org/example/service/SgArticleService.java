@@ -20,6 +20,9 @@ public interface SgArticleService extends IService<SgArticle> {
 
     ResponseResult add(AddArticleDto article);
 
+    ResponseResult updateViewCount(String id);
+
+
     //ResponseResult articleList2(Integer pageNum, Integer pageSize, Long categoryId, Object o, Object o1);
 }
 

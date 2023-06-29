@@ -3,25 +3,25 @@
   */
 package org.example.entity;
 
+import lombok.Data;
+
+import java.util.Date;
+
 /**
  * Auto-generated: 2023-05-30 15:47:49
  *
  * @author json.cn (i@json.cn)
  * @website http://www.json.cn/java2pojo/
  */
+@Data
 public class RoleVo {
 
-    private String id;
+    private Long id;
     private String roleKey;
     private String roleName;
     private String roleSort;
+    private Date createTime;
     private String status;
-    public void setId(String id) {
-         this.id = id;
-     }
-     public String getId() {
-         return id;
-     }
 
     public void setRoleKey(String roleKey) {
          this.roleKey = roleKey;

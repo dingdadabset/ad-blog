@@ -22,7 +22,8 @@ public class SgArticleController<R>  {
     @Resource
     private SgArticleService sgArticleService;
     @GetMapping("/{id}")
-    public ResponseResult getArticleDetail(Long id){
+    public ResponseResult getArticleDetail(@PathVariable("id") Long id){
+
         return sgArticleService.getArticleDetail(id);
     }
     @GetMapping("/articleList")
@@ -32,6 +33,11 @@ public class SgArticleController<R>  {
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList(){
         return sgArticleService.hotArticleList();
+    }
+    @PutMapping("/updateViewCount/{id}")
+    public ResponseResult updateViewCount(@PathVariable("id") String id){
+
+        return sgArticleService.updateViewCount(id);
     }
 }
 

@@ -36,7 +36,7 @@ public class UserManagerController {
 
     @GetMapping("{id}")
     public ResponseResult getOneUserById(@PathVariable String id){
-        return ResponseResult.okResult(AdminUserServiceImpl.getDetail(id));
+        return AdminUserServiceImpl.getDetail(id);
     }
     @PutMapping ()
     public ResponseResult updateUser(@RequestBody User user){
