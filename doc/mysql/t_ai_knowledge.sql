@@ -11,7 +11,7 @@ CREATE TABLE `t_ai_knowledge`  (
   `answer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '答案内容',
   `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'general' COMMENT '知识分类',
   `tags` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '标签（逗号分隔）',
-  `difficulty` tinyint(1) NOT NULL DEFAULT 1 COMMENT '难度等级 (1初级 2中级 3高级)',
+  `difficulty` tinyint UNSIGNED NOT NULL DEFAULT 1 COMMENT '难度等级 (1初级 2中级 3高级)',
   `view_count` int NOT NULL DEFAULT 0 COMMENT '浏览次数',
   `like_count` int NOT NULL DEFAULT 0 COMMENT '点赞次数',
   `is_public` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否公开 (0否 1是)',

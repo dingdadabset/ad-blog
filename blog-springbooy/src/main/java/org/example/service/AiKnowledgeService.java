@@ -14,7 +14,7 @@ import org.example.entity.AiKnowledgeDTO;
 public interface AiKnowledgeService extends IService<AiKnowledge> {
     
     /**
-     * 获取知识库列表（分页）
+     * 获取知识库列表（分页）- 前台使用，只显示已发布且公开的
      * @param pageNum 页码
      * @param pageSize 每页大小
      * @param category 分类
@@ -23,6 +23,17 @@ public interface AiKnowledgeService extends IService<AiKnowledge> {
      * @return 知识库列表
      */
     ResponseResult getKnowledgeList(Integer pageNum, Integer pageSize, String category, Integer difficulty, String keyword);
+    
+    /**
+     * 获取知识库列表（分页）- 后台管理使用，显示所有状态
+     * @param pageNum 页码
+     * @param pageSize 每页大小
+     * @param category 分类
+     * @param difficulty 难度
+     * @param keyword 关键词
+     * @return 知识库列表
+     */
+    ResponseResult getKnowledgeListAdmin(Integer pageNum, Integer pageSize, String category, Integer difficulty, String keyword);
     
     /**
      * 获取知识库详情

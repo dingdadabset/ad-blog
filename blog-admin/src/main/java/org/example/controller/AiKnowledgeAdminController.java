@@ -29,7 +29,7 @@ public class AiKnowledgeAdminController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Integer difficulty,
             @RequestParam(required = false) String keyword) {
-        return aiKnowledgeService.getKnowledgeList(pageNum, pageSize, category, difficulty, keyword);
+        return aiKnowledgeService.getKnowledgeListAdmin(pageNum, pageSize, category, difficulty, keyword);
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.example.conf.AppHttpCodeEnum;
@@ -33,6 +34,48 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
         // 只查询已发布且公开的知识
         queryWrapper.eq(AiKnowledge::getStatus, 1)
                    .eq(AiKnowledge::getIsPublic, 1);
+        
+        // 分类筛选
+        if (StringUtils.hasText(category)) {
+            queryWrapper.eq(AiKnowledge::getCategory, category);
+        }
+        
+        // 难度筛选
+        if (Objects.nonNull(difficulty)) {
+            queryWrapper.eq(AiKnowledge::getDifficulty, difficulty);
+        }
+        
+        // 关键词搜索（标题或问题）
+        if (StringUtils.hasText(keyword)) {
+            queryWrapper.and(wrapper -> wrapper
+                .like(AiKnowledge::getTitle, keyword)
+                .or()
+                .like(AiKnowledge::getQuestion, keyword)
+                .or()
+                .like(AiKnowledge::getTags, keyword)
+            );
+        }
+        
+        // 按创建时间降序排序
+        queryWrapper.orderByDesc(AiKnowledge::getCreateTime);
+        
+        // 分页查询
+        Page<AiKnowledge> page = new Page<>(pageNum, pageSize);
+        page(page, queryWrapper);
+        
+        // 转换为VO
+        List<AiKnowledgeListVO> knowledgeListVOs = BeanCopyUtils.copyBeanList(
+            page.getRecords(), AiKnowledgeListVO.class);
+        
+        PageVo pageVo = new PageVo(knowledgeListVOs, page.getTotal());
+        return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult getKnowledgeListAdmin(Integer pageNum, Integer pageSize, String category, Integer difficulty, String keyword) {
+        LambdaQueryWrapper<AiKnowledge> queryWrapper = new LambdaQueryWrapper<>();
+        
+        // 管理后台查询所有状态的知识，不过滤发布状态和公开状态
         
         // 分类筛选
         if (StringUtils.hasText(category)) {
@@ -136,26 +179,30 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
 
     @Override
     public ResponseResult updateViewCount(Long id) {
-        AiKnowledge knowledge = getById(id);
-        if (Objects.isNull(knowledge)) {
+        // 使用原子性的数据库操作来避免并发问题
+        LambdaUpdateWrapper<AiKnowledge> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(AiKnowledge::getId, id)
+                    .setSql("view_count = view_count + 1");
+        
+        boolean updated = update(updateWrapper);
+        if (!updated) {
             return ResponseResult.errorResult(500, "知识库不存在");
         }
-        
-        knowledge.setViewCount(knowledge.getViewCount() + 1);
-        updateById(knowledge);
         
         return ResponseResult.okResult();
     }
 
     @Override
     public ResponseResult likeKnowledge(Long id) {
-        AiKnowledge knowledge = getById(id);
-        if (Objects.isNull(knowledge)) {
+        // 使用原子性的数据库操作来避免并发问题
+        LambdaUpdateWrapper<AiKnowledge> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(AiKnowledge::getId, id)
+                    .setSql("like_count = like_count + 1");
+        
+        boolean updated = update(updateWrapper);
+        if (!updated) {
             return ResponseResult.errorResult(500, "知识库不存在");
         }
-        
-        knowledge.setLikeCount(knowledge.getLikeCount() + 1);
-        updateById(knowledge);
         
         return ResponseResult.okResult();
     }
