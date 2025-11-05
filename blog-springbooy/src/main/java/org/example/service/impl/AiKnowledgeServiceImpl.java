@@ -74,7 +74,7 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
     public ResponseResult getKnowledgeDetail(Long id) {
         AiKnowledge knowledge = getById(id);
         if (Objects.isNull(knowledge)) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.RESOURCE_NOT_EXIST);
+            return ResponseResult.errorResult(500, "知识库不存在");
         }
         
         // 转换为详情VO
@@ -101,12 +101,12 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
     @Override
     public ResponseResult updateKnowledge(AiKnowledgeDTO dto) {
         if (Objects.isNull(dto.getId())) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_ERROR);
+            return ResponseResult.errorResult(500, "知识库ID不能为空");
         }
         
         AiKnowledge knowledge = getById(dto.getId());
         if (Objects.isNull(knowledge)) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.RESOURCE_NOT_EXIST);
+            return ResponseResult.errorResult(500, "知识库不存在");
         }
         
         BeanUtils.copyProperties(dto, knowledge);
@@ -123,7 +123,7 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
     public ResponseResult deleteKnowledge(Long id) {
         AiKnowledge knowledge = getById(id);
         if (Objects.isNull(knowledge)) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.RESOURCE_NOT_EXIST);
+            return ResponseResult.errorResult(500, "知识库不存在");
         }
         
         boolean removed = removeById(id);
@@ -138,7 +138,7 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
     public ResponseResult updateViewCount(Long id) {
         AiKnowledge knowledge = getById(id);
         if (Objects.isNull(knowledge)) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.RESOURCE_NOT_EXIST);
+            return ResponseResult.errorResult(500, "知识库不存在");
         }
         
         knowledge.setViewCount(knowledge.getViewCount() + 1);
@@ -151,7 +151,7 @@ public class AiKnowledgeServiceImpl extends ServiceImpl<AiKnowledgeDao, AiKnowle
     public ResponseResult likeKnowledge(Long id) {
         AiKnowledge knowledge = getById(id);
         if (Objects.isNull(knowledge)) {
-            return ResponseResult.errorResult(AppHttpCodeEnum.RESOURCE_NOT_EXIST);
+            return ResponseResult.errorResult(500, "知识库不存在");
         }
         
         knowledge.setLikeCount(knowledge.getLikeCount() + 1);

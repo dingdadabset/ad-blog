@@ -6,8 +6,6 @@ import org.example.service.AiKnowledgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 /**
  * AI知识库管理控制层 - 后台管理接口
  *
@@ -38,7 +36,7 @@ public class AiKnowledgeAdminController {
      * 添加知识库
      */
     @PostMapping
-    public ResponseResult addKnowledge(@Valid @RequestBody AiKnowledgeDTO dto) {
+    public ResponseResult addKnowledge(@RequestBody AiKnowledgeDTO dto) {
         return aiKnowledgeService.addKnowledge(dto);
     }
 
@@ -46,7 +44,7 @@ public class AiKnowledgeAdminController {
      * 更新知识库
      */
     @PutMapping
-    public ResponseResult updateKnowledge(@Valid @RequestBody AiKnowledgeDTO dto) {
+    public ResponseResult updateKnowledge(@RequestBody AiKnowledgeDTO dto) {
         return aiKnowledgeService.updateKnowledge(dto);
     }
 
